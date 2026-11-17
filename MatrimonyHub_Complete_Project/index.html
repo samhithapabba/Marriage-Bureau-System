@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MatrimonyHub Marriage Bureau Management System">
+  <title>MatrimonyHub | Marriage Bureau System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="toast-container"></div>
+
+<div id="login-screen" class="login-screen">
+  <div class="login-card">
+    <div class="login-logo"><i class="fa-solid fa-heart"></i></div>
+    <h1>MatrimonyHub</h1>
+    <p>Marriage Bureau Management System</p>
+    <form id="login-form">
+      <label>Email
+        <input id="login-email" type="email" value="admin@matrimonyhub.com" required>
+      </label>
+      <label>Password
+        <input id="login-password" type="password" value="admin123" required>
+      </label>
+      <button class="btn primary full" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+    </form>
+    <div class="demo-login">Demo login: <b>admin@matrimonyhub.com</b> / <b>admin123</b></div>
+  </div>
+</div>
+
+<div id="app" class="app hidden">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-icon"><i class="fa-solid fa-heart"></i></div>
+      <div><strong>MatrimonyHub</strong><span>Marriage Bureau</span></div>
+    </div>
+    <nav>
+      <button class="nav-item active" data-section="dashboard"><i class="fa-solid fa-chart-pie"></i> Dashboard</button>
+      <button class="nav-item" data-section="clients"><i class="fa-solid fa-users"></i> Clients</button>
+      <button class="nav-item" data-section="register-client"><i class="fa-solid fa-user-plus"></i> Register Client</button>
+      <button class="nav-item" data-section="matches"><i class="fa-solid fa-heart-circle-check"></i> Matches</button>
+      <button class="nav-item" data-section="inquiries"><i class="fa-solid fa-envelope"></i> Inquiries</button>
+      <button class="nav-item" data-section="messages"><i class="fa-solid fa-comments"></i> Messages</button>
+      <button class="nav-item" data-section="success-stories"><i class="fa-solid fa-ring"></i> Success Stories</button>
+      <button class="nav-item" data-section="reports"><i class="fa-solid fa-chart-column"></i> Reports</button>
+    </nav>
+    <div class="sidebar-bottom">
+      <button class="nav-item" id="dark-mode-btn"><i class="fa-solid fa-moon"></i> Dark Mode</button>
+      <button class="nav-item logout" id="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button id="menu-btn" class="icon-btn mobile-only"><i class="fa-solid fa-bars"></i></button>
+      <div class="top-search"><i class="fa-solid fa-magnifying-glass"></i><input id="global-search" placeholder="Search clients..."></div>
+      <div class="top-actions">
+        <button class="icon-btn" id="notification-btn" title="Notifications"><i class="fa-regular fa-bell"></i><span class="badge" id="notification-count">0</span></button>
+        <div class="profile-mini"><div class="avatar">A</div><div><b>Admin</b><small>Bureau Staff</small></div></div>
+      </div>
+    </header>
+
+    <div class="content">
+      <!-- Dashboard -->
+      <section id="dashboard" class="page active-page">
+        <div class="page-heading">
+          <div><p class="eyebrow">Overview</p><h2>Dashboard</h2><p>Manage your marriage bureau from one place.</p></div>
+          <button class="btn primary" data-go="register-client"><i class="fa-solid fa-plus"></i> Register Client</button>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-icon blue"><i class="fa-solid fa-users"></i></div><div><span>Total Clients</span><strong id="stat-clients">0</strong><small id="stat-client-change">Registered profiles</small></div></div>
+          <div class="stat-card"><div class="stat-icon green"><i class="fa-solid fa-heart"></i></div><div><span>Active Matches</span><strong id="stat-matches">0</strong><small>Suggested compatibility</small></div></div>
+          <div class="stat-card"><div class="stat-icon orange"><i class="fa-solid fa-envelope"></i></div><div><span>Pending Inquiries</span><strong id="stat-inquiries">0</strong><small>Need attention</small></div></div>
+          <div class="stat-card"><div class="stat-icon pink"><i class="fa-solid fa-ring"></i></div><div><span>Success Stories</span><strong id="stat-success">0</strong><small>Happy couples</small></div></div>
+        </div>
+        <div class="dashboard-grid">
+          <div class="panel">
+            <div class="panel-head"><div><h3>Recent Clients</h3><p>Latest registered profiles</p></div><button class="text-btn" data-go="clients">View all</button></div>
+            <div id="recent-clients" class="table-wrap"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><div><h3>Quick Actions</h3><p>Common bureau tasks</p></div></div>
+            <div class="quick-actions">
+              <button data-go="register-client"><i class="fa-solid fa-user-plus"></i><span>Add Client</span></button>
+              <button data-go="matches"><i class="fa-solid fa-heart-circle-check"></i><span>Find Matches</span></button>
+              <button data-go="inquiries"><i class="fa-solid fa-envelope-open-text"></i><span>Review Inquiries</span></button>
+              <button data-go="reports"><i class="fa-solid fa-chart-column"></i><span>View Reports</span></button>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><h3>Client Distribution</h3><p>Profiles by gender and status</p></div></div>
+          <div id="distribution-chart" class="bar-chart"></div>
+        </div>
+      </section>
+
+      <!-- Clients -->
+      <section id="clients" class="page">
+        <div class="page-heading"><div><p class="eyebrow">Directory</p><h2>Client Directory</h2><p>Search, filter and manage registered clients.</p></div><button class="btn primary" data-go="register-client"><i class="fa-solid fa-plus"></i> Add Client</button></div>
+        <div class="filter-panel">
+          <div class="search-field"><i class="fa-solid fa-magnifying-glass"></i><input id="client-search" placeholder="Search by name, education, occupation..."></div>
+          <select id="gender-filter"><option value="">All Genders</option><option>Male</option><option>Female</option></select>
+          <select id="status-filter"><option value="">All Status</option><option>Active</option><option>Inactive</option><option>Pending</option></select>
+          <select id="religion-filter"><option value="">All Religions</option><option>Hindu</option><option>Muslim</option><option>Christian</option><option>Sikh</option><option>Other</option></select>
+        </div>
+        <div id="clients-grid" class="clients-grid"></div>
+      </section>
+
+      <!-- Register -->
+      <section id="register-client" class="page">
+        <div class="page-heading"><div><p class="eyebrow">Registration</p><h2 id="form-title">Register New Client</h2><p>Create a complete matrimonial profile.</p></div></div>
+        <form id="client-form" class="form-card">
+          <input type="hidden" id="edit-id">
+          <div class="stepper">
+            <div class="step active" data-step="1"><span>1</span> Personal</div>
+            <div class="step" data-step="2"><span>2</span> Family</div>
+            <div class="step" data-step="3"><span>3</span> Education & Career</div>
+            <div class="step" data-step="4"><span>4</span> Partner Preferences</div>
+          </div>
+          <div class="form-step active" data-step="1">
+            <h3>Personal Information</h3>
+            <div class="form-grid">
+              <label>Full Name *<input id="name" required></label>
+              <label>Gender *<select id="gender" required><option value="">Select</option><option>Male</option><option>Female</option></select></label>
+              <label>Date of Birth *<input id="dob" type="date" required></label>
+              <label>Marital Status<select id="marital-status"><option>Never Married</option><option>Divorced</option><option>Widowed</option></select></label>
+              <label>Religion<select id="religion"><option>Hindu</option><option>Muslim</option><option>Christian</option><option>Sikh</option><option>Other</option></select></label>
+              <label>Caste<input id="caste" placeholder="e.g. Brahmin"></label>
+              <label>Mother Tongue<input id="mother-tongue" placeholder="e.g. Telugu"></label>
+              <label>Profile Photo URL<input id="photo" placeholder="https://... (optional)"></label>
+            </div>
+          </div>
+          <div class="form-step" data-step="2">
+            <h3>Family Details</h3>
+            <div class="form-grid">
+              <label>Family Type<select id="family-type"><option>Nuclear</option><option>Joint</option><option>Other</option></select></label>
+              <label>Family Values<select id="family-values"><option>Traditional</option><option>Moderate</option><option>Modern</option></select></label>
+              <label>Father's Occupation<input id="father-occupation"></label>
+              <label>Mother's Occupation<input id="mother-occupation"></label>
+              <label>Number of Siblings<input id="siblings" type="number" min="0" value="0"></label>
+            </div>
+          </div>
+          <div class="form-step" data-step="3">
+            <h3>Education & Career</h3>
+            <div class="form-grid">
+              <label>Education Level<select id="education"><option>10th</option><option>12th</option><option>Diploma</option><option>B.Tech</option><option>BE</option><option>BA</option><option>MA</option><option>MBA</option><option>M.Tech</option><option>PhD</option><option>Other</option></select></label>
+              <label>Occupation<input id="occupation" required></label>
+              <label>Annual Income<input id="income" type="number" min="0" placeholder="₹"></label>
+              <label>Working Location<input id="location" required placeholder="City"></label>
+            </div>
+          </div>
+          <div class="form-step" data-step="4">
+            <h3>Partner Preferences</h3>
+            <div class="form-grid">
+              <label>Preferred Age From<input id="pref-age-min" type="number" min="18" max="80" value="24"></label>
+              <label>Preferred Age To<input id="pref-age-max" type="number" min="18" max="80" value="32"></label>
+              <label>Preferred Religion<select id="pref-religion"><option>Any</option><option>Hindu</option><option>Muslim</option><option>Christian</option><option>Sikh</option><option>Other</option></select></label>
+              <label>Preferred Caste<input id="pref-caste" placeholder="Any"></label>
+              <label>Preferred Education<input id="pref-education" placeholder="Any"></label>
+              <label>Preferred Occupation<input id="pref-occupation" placeholder="Any"></label>
+              <label>Preferred Location<input id="pref-location" placeholder="Any"></label>
+            </div>
+          </div>
+          <div class="form-actions"><button type="button" id="prev-step" class="btn secondary">Previous</button><div><button type="button" id="next-step" class="btn primary">Next</button><button type="submit" id="save-client" class="btn primary hidden">Save Client</button></div></div>
+        </form>
+      </section>
+
+      <!-- Matches -->
+      <section id="matches" class="page">
+        <div class="page-heading"><div><p class="eyebrow">Compatibility</p><h2>Matchmaking Engine</h2><p>Suggestions are calculated from age, religion, caste, education, occupation and location preferences.</p></div></div>
+        <div class="match-controls"><label>Select Client<select id="match-client-select"></select></label><button id="generate-matches" class="btn primary"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Matches</button></div>
+        <div id="match-results" class="match-results"></div>
+      </section>
+
+      <!-- Inquiries -->
+      <section id="inquiries" class="page">
+        <div class="page-heading"><div><p class="eyebrow">Communication</p><h2>Inquiry Management</h2><p>Track interest expressions and follow-up status.</p></div></div>
+        <div class="panel"><div class="panel-head"><div><h3>All Inquiries</h3></div><select id="inquiry-filter"><option value="">All</option><option>Pending</option><option>Contacted</option><option>Closed</option></select></div><div id="inquiries-table" class="table-wrap"></div></div>
+      </section>
+
+      <!-- Messages -->
+      <section id="messages" class="page">
+        <div class="page-heading"><div><p class="eyebrow">Communication</p><h2>Internal Messages</h2><p>Simulated bureau-client messaging.</p></div></div>
+        <div class="message-layout">
+          <div class="conversation-list" id="conversation-list"></div>
+          <div class="chat-panel">
+            <div class="chat-head" id="chat-head">Select a conversation</div>
+            <div class="chat-body" id="chat-body"></div>
+            <form id="message-form" class="message-form"><input id="message-input" placeholder="Type a message..." required><button class="btn primary" type="submit"><i class="fa-solid fa-paper-plane"></i></button></form>
+          </div>
+        </div>
+      </section>
+
+      <!-- Success -->
+      <section id="success-stories" class="page">
+        <div class="page-heading"><div><p class="eyebrow">Celebrations</p><h2>Success Stories</h2><p>Showcase marriages successfully facilitated by the bureau.</p></div><button id="add-story-btn" class="btn primary"><i class="fa-solid fa-plus"></i> Add Story</button></div>
+        <div id="stories-grid" class="stories-grid"></div>
+      </section>
+
+      <!-- Reports -->
+      <section id="reports" class="page">
+        <div class="page-heading"><div><p class="eyebrow">Analytics</p><h2>Reports & Analytics</h2><p>Summary of client demographics, matches and success rate.</p></div><button id="export-csv" class="btn primary"><i class="fa-solid fa-file-csv"></i> Export Clients CSV</button></div>
+        <div class="report-grid">
+          <div class="report-card"><span>Total Profiles</span><strong id="report-total">0</strong></div>
+          <div class="report-card"><span>Active Profiles</span><strong id="report-active">0</strong></div>
+          <div class="report-card"><span>Male Profiles</span><strong id="report-male">0</strong></div>
+          <div class="report-card"><span>Female Profiles</span><strong id="report-female">0</strong></div>
+        </div>
+        <div class="panel"><div class="panel-head"><div><h3>Education Distribution</h3></div></div><div id="education-chart" class="bar-chart"></div></div>
+        <div class="panel"><div class="panel-head"><div><h3>Match & Success Summary</h3></div></div><div id="summary-report" class="summary-list"></div></div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<!-- Profile modal -->
+<div class="modal-backdrop hidden" id="profile-modal">
+  <div class="modal">
+    <button class="modal-close" data-close="profile-modal"><i class="fa-solid fa-xmark"></i></button>
+    <div id="profile-content"></div>
+  </div>
+</div>
+
+<!-- Story modal -->
+<div class="modal-backdrop hidden" id="story-modal">
+  <div class="modal small-modal">
+    <button class="modal-close" data-close="story-modal"><i class="fa-solid fa-xmark"></i></button>
+    <h2>Add Success Story</h2>
+    <form id="story-form" class="form-grid">
+      <label>Couple Name *<input id="story-couple" required placeholder="Asha & Rahul"></label>
+      <label>Marriage Date *<input id="story-date" type="date" required></label>
+      <label class="full-span">Story *<textarea id="story-text" required rows="4"></textarea></label>
+      <label class="full-span">Image URL<input id="story-image" placeholder="https://... (optional)"></label>
+      <button class="btn primary full-span" type="submit">Save Story</button>
+    </form>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
